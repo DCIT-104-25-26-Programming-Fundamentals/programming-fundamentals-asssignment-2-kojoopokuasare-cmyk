@@ -11,46 +11,46 @@
 // OPERATIONS YOUR CALCULATOR MUST SUPPORT
 // -----------------------------------------------------------------------------
 //
-//   1. Addition          ( + )    e.g.  10 + 3  =  13
-//   2. Subtraction       ( - )    e.g.  10 - 3  =  7
-//   3. Multiplication    ( * )    e.g.  10 * 3  =  30
-//   4. Division          ( / )    e.g.  10 / 3  =  3.33
-//   5. Modulus           ( % )    e.g.  10 % 3  =  1  (remainder)
-//   6. Exponentiation    ( ^ )    e.g.  2 ^ 8   =  256
-//   7. Quit
+// 1. Addition ( + ) e.g. 10 + 3 = 13
+// 2. Subtraction ( - ) e.g. 10 - 3 = 7
+// 3. Multiplication ( * ) e.g. 10 * 3 = 30
+// 4. Division ( / ) e.g. 10 / 3 = 3.33
+// 5. Modulus ( % ) e.g. 10 % 3 = 1 (remainder)
+// 6. Exponentiation ( ^ ) e.g. 2 ^ 8 = 256
+// 7. Quit
 //
 // -----------------------------------------------------------------------------
 // HOW THE MENU SHOULD LOOK
 // -----------------------------------------------------------------------------
 //
-//   ============================
-//        SIMPLE CALCULATOR
-//   ============================
-//   1. Addition
-//   2. Subtraction
-//   3. Multiplication
-//   4. Division
-//   5. Modulus
-//   6. Exponentiation
-//   7. Quit
-//   Select an operation (1-7):
+// ============================
+// SIMPLE CALCULATOR
+// ============================
+// 1. Addition
+// 2. Subtraction
+// 3. Multiplication
+// 4. Division
+// 5. Modulus
+// 6. Exponentiation
+// 7. Quit
+// Select an operation (1-7):
 //
 // -----------------------------------------------------------------------------
 // EXPECTED INTERACTION EXAMPLE
 // -----------------------------------------------------------------------------
 //
-//   Select an operation (1-7): 4
-//   Enter first number : 10
-//   Enter second number: 3
-//   Result: 10 / 3 = 3.33
+// Select an operation (1-7): 4
+// Enter first number : 10
+// Enter second number: 3
+// Result: 10 / 3 = 3.33
 //
-//   Select an operation (1-7): 4
-//   Enter first number : 5
-//   Enter second number: 0
-//   Error: Cannot divide by zero.
+// Select an operation (1-7): 4
+// Enter first number : 5
+// Enter second number: 0
+// Error: Cannot divide by zero.
 //
-//   Select an operation (1-7): 7
-//   Goodbye!
+// Select an operation (1-7): 7
+// Goodbye!
 //
 // -----------------------------------------------------------------------------
 // REQUIREMENTS
@@ -63,13 +63,133 @@
 // - Handle invalid menu choices gracefully.
 // - For exponentiation use a loop or the pow() function from <cmath>.
 //
-
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
+// YOUR CODE BELOW
 // =============================================================================
-
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+
 using namespace std;
 
+// 1. Addition
+double add(double a, double b) {
+    return a + b;
+}
+
+// 2. Subtraction
+double subtract(double a, double b) {
+    return a - b;
+}
+
+// 3. Multiplication
+double multiply(double a, double b) {
+    return a * b;
+}
+
+// 4. Division
+double divide(double a, double b) {
+    return a / b;
+}
+
+// 5. Modulus (Requires casting values to integers internally)
+int modularRemainder(int a, int b) {
+    return a % b;
+}
+
+// 6. Exponentiation
+double power(double base, double exponent) {
+    return pow(base, exponent);
+}
+
+// Helper function to prompt and collect operands from the user
+void getOperands(double& num1, double& num2) {
+    cout << "Enter first number : ";
+    cin >> num1;
+    cout << "Enter second number: ";
+    cin >> num2;
+}
+
+int main() {
+    int choice = 0;
+    double num1 = 0, num2 = 0;
+
+    // Enforce 2 decimal positions globally for float outputs
+    cout << fixed << setprecision(2);
+
+    while (true) {
+        cout << "\n============================" << endl;
+        cout << "SIMPLE CALCULATOR" << endl;
+        cout << "============================" << endl;
+        cout << "1. Addition" << endl;
+        cout << "2. Subtraction" << endl;
+        cout << "3. Multiplication" << endl;
+        cout << "4. Division" << endl;
+        cout << "5. Modulus" << endl;
+        cout << "6. Exponentiation" << endl;
+        cout << "7. Quit" << endl;
+        cout << "Select an operation (1-7): ";
+        cin >> choice;
+
+        // Check for stream injection failures (e.g. user typing text letters)
+        if (cin.fail()) {
+            cin.clear();
+            string clearingJunk;
+            cin >> clearingJunk;
+            cout << "Invalid input. Please input a selection number from 1 to 7." << endl;
+            continue;
+        }
+
+        // Handle structural early exit from loop
+        if (choice == 7) {
+            cout << "Goodbye!" << endl;
+            break;
+        }
+
+        // Validate menu entry choices bounds before loading parameters
+        if (choice < 1 || choice > 7) {
+            cout << "Error: Selection choice must be exactly between 1 and 7." << endl;
+            continue;
+        }
+
+        // Capture user inputs for calculations
+        getOperands(num1, num2);
+
+        // Map selection options using a routing switch statement
+        switch (choice) {
+            case 1:
+                cout << "Result: " << num1 << " + " << num2 << " = " << add(num1, num2) << endl;
+                break;
+            case 2:
+                cout << "Result: " << num1 << " - " << num2 << " = " << subtract(num1, num2) << endl;
+                break;
+            case 3:
+                cout << "Result: " << num1 << " * " << num2 << " = " << multiply(num1, num2) << endl;
+                break;
+            case 4:
+                // Division by zero runtime safety checkpoint validation
+                if (num2 == 0) {
+                    cout << "Error: Cannot divide by zero." << endl;
+                } else {
+                    cout << "Result: " << num1 << " / " << num2 << " = " << divide(num1, num2) << endl;
+                }
+                break;
+            case 5:
+                // Modulo evaluation bounds validation check 
+                if (static_cast<int>(num2) == 0) {
+                    cout << "Error: Cannot perform modulus by zero." << endl;
+                } else {
+                    int intNum1 = static_cast<int>(num1);
+                    int intNum2 = static_cast<int>(num2);
+                    cout << "Result: " << intNum1 << " % " << intNum2 << " = " 
+                         << modularRemainder(intNum1, intNum2) << endl;
+                }
+                break;
+            case 6:
+                cout << "Result: " << num1 << " ^ " << num2 << " = " << power(num1, num2) << endl;
+                break;
+        }
+    }
+
+    return 0;
+}
