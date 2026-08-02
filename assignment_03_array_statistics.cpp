@@ -11,18 +11,18 @@
 // EXPECTED INPUT / OUTPUT EXAMPLE
 // -----------------------------------------------------------------------------
 //
-//   How many numbers? 5
-//   Enter number 1: 4
-//   Enter number 2: 7
-//   Enter number 3: 2
-//   Enter number 4: 9
-//   Enter number 5: 1
+// How many numbers? 5
+// Enter number 1: 4
+// Enter number 2: 7
+// Enter number 3: 2
+// Enter number 4: 9
+// Enter number 5: 1
 //
-//   Results:
-//   Sum:     23
-//   Average: 4.6
-//   Maximum: 9
-//   Minimum: 1
+// Results:
+// Sum: 23
+// Average: 4.6
+// Maximum: 9
+// Minimum: 1
 //
 // -----------------------------------------------------------------------------
 // REQUIREMENTS
@@ -33,12 +33,81 @@
 // - N must be a positive integer. If the user enters 0 or a negative number,
 //   print an error message and stop.
 //
-
-//
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
+// YOUR CODE BELOW
 // =============================================================================
-
 #include <iostream>
+
 using namespace std;
 
+// Function to calculate the sum of array elements
+double calculateSum(const double arr[], int size) {
+    double total = 0;
+    for (int i = 0; i < size; i++) {
+        total += arr[i];
+    }
+    return total;
+}
+
+// Function to calculate the average of array elements
+double calculateAverage(const double arr[], int size) {
+    if (size == 0) return 0.0;
+    return calculateSum(arr, size) / size;
+}
+
+// Function to find the maximum value in the array
+double findMaximum(const double arr[], int size) {
+    double maxVal = arr[0]; // Initialize with the first element
+    for (int i = 1; i < size; i++) {
+        if (arr[i] > maxVal) {
+            maxVal = arr[i];
+        }
+    }
+    return maxVal;
+}
+
+// Function to find the minimum value in the array
+double findMinimum(const double arr[], int size) {
+    double minVal = arr[0]; // Initialize with the first element
+    for (int i = 1; i < size; i++) {
+        if (arr[i] < minVal) {
+            minVal = arr[i];
+        }
+    }
+    return minVal;
+}
+
+int main() {
+    int n;
+
+    // Prompt user for the number of elements
+    cout << "How many numbers? ";
+    cin >> n;
+
+    // Validate that N is a positive integer
+    if (n <= 0) {
+        cout << "Error: Number of elements must be greater than zero." << endl;
+        return 1; // Stop execution
+    }
+
+    // Allocate array dynamically to support variable sizing safely
+    double* numbers = new double[n];
+
+    // Read input elements from user
+    for (int i = 0; i < n; i++) {
+        cout << "Enter number " << (i + 1) << ": ";
+        cin >> numbers[i];
+    }
+
+    // Output calculated statistical metrics
+    cout << "\nResults:" << endl;
+    cout << "Sum: " << calculateSum(numbers, n) << endl;
+    cout << "Average: " << calculateAverage(numbers, n) << endl;
+    cout << "Maximum: " << findMaximum(numbers, n) << endl;
+    cout << "Minimum: " << findMinimum(numbers, n) << endl;
+
+    // Clean up allocated memory
+    delete[] numbers;
+
+    return 0;
+}
