@@ -7,7 +7,7 @@
 // The Fibonacci sequence is a series of numbers where each number is the sum
 // of the two numbers before it:
 //
-//   0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
+// 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
 //
 // Write a C++ program with TWO parts, each implemented as a function.
 //
@@ -18,8 +18,8 @@
 // - Print the first N numbers of the Fibonacci sequence on one line.
 //
 // Example:
-//   How many terms? 7
-//   Fibonacci sequence: 0 1 1 2 3 5 8
+// How many terms? 7
+// Fibonacci sequence: 0 1 1 2 3 5 8
 //
 // -----------------------------------------------------------------------------
 // PART B — Check if a Number Belongs to the Sequence
@@ -29,11 +29,11 @@
 // - Print an appropriate message.
 //
 // Example:
-//   Enter a number to check: 13
-//   13 is a Fibonacci number.
+// Enter a number to check: 13
+// 13 is a Fibonacci number.
 //
-//   Enter a number to check: 20
-//   20 is NOT a Fibonacci number.
+// Enter a number to check: 20
+// 20 is NOT a Fibonacci number.
 //
 // -----------------------------------------------------------------------------
 // REQUIREMENTS
@@ -42,12 +42,71 @@
 // - N must be a positive integer. If it is not, print an error message.
 // - Each part must be implemented in its own function (see scaffold below).
 //
-
-//
 // =============================================================================
-// YOUR CODE BELOW — remove the // symbols from the scaffold and fill it in
+// YOUR CODE BELOW
 // =============================================================================
-
 #include <iostream>
+
 using namespace std;
 
+// PART A: Function to generate and print the first N terms of the Fibonacci sequence
+void printFibonacciTerms(int n) {
+    if (n <= 0) {
+        cout << "Error: Number of terms must be a positive integer." << endl;
+        return;
+    }
+
+    long long t1 = 0, t2 = 1;
+
+    cout << "Fibonacci sequence: ";
+    for (int i = 1; i <= n; i++) {
+        cout << t1 << " ";
+        
+        long long nextTerm = t1 + t2;
+        t1 = t2;
+        t2 = nextTerm;
+    }
+    cout << endl;
+}
+
+// PART B: Function to check if a specific number belongs to the Fibonacci sequence
+bool isFibonacciNumber(long long num) {
+    // Negative numbers are not part of the standard Fibonacci sequence
+    if (num < 0) {
+        return false;
+    }
+
+    long long t1 = 0, t2 = 1;
+
+    // Generate terms iteratively until we match or exceed the target number
+    while (t1 < num) {
+        long long nextTerm = t1 + t2;
+        t1 = t2;
+        t2 = nextTerm;
+    }
+
+    // If our sequence contains the number, return true
+    return (t1 == num);
+}
+
+int main() {
+    int terms;
+    long long checkNum;
+
+    cout << "=== PART A: PRINT FIRST N TERMS ===" << endl;
+    cout << "How many terms? ";
+    cin >> terms;
+    printFibonacciTerms(terms);
+
+    cout << "\n=== PART B: CHECK IF A NUMBER IS FIBONACCI ===" << endl;
+    cout << "Enter a number to check: ";
+    cin >> checkNum;
+
+    if (isFibonacciNumber(checkNum)) {
+        cout << checkNum << " is a Fibonacci number." << endl;
+    } else {
+        cout << checkNum << " is NOT a Fibonacci number." << endl;
+    }
+
+    return 0;
+}
